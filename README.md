@@ -48,7 +48,9 @@ The filter and grid blocks communicate via the native `CustomEvent` API on `docu
 - `wm:page-change` — dispatched by the pagination's `view.js` when a page button is clicked. Payload: `{ page }`.
 - `wm:pagination-update` — dispatched by the grid's `view.js` after fetching new posts. Payload: `{ totalPages, currentPage }`.
 
-**Why Custom Events over `@wordpress/data`?**  
+Custom event names are plain strings — no registration or declaration is needed. The `wm:` prefix prevents naming collisions with other plugins or libraries.
+
+**Why Custom Events over `@wordpress/data`?**
 `@wordpress/data` is the right choice for state shared within the block editor. On the frontend (view scripts), it adds significant overhead. Custom Events are lightweight, require no shared module, and work naturally when blocks are placed anywhere on the same page without a common ancestor.
 
 ### Responsive Columns: CSS Custom Properties
@@ -67,6 +69,8 @@ The REST API filtering maps directly to the filter logic requirement:
 ### Query Caching: Transients API
 
 `render.php` caches the full rendered HTML in a WordPress transient keyed by a hash of the block attributes and current page number. Cache TTL is 1 hour. The cache is invalidated on `save_post_wm_article` and `deleted_post` hooks.
+
+**Tradeoff:** When an article is saved or deleted, the cache is cleared and the updated content is only visible to users after a page refresh — not in real time.
 
 ### Isolation via Custom Taxonomies
 
@@ -89,10 +93,12 @@ Deleting the plugin from **Plugins → Installed Plugins → Delete** removes:
 
 ## Development
 
+All source files are in `src/`. After any change to `src/`, you must run `npm run build` for WordPress to pick up the changes — WordPress reads only from `build/`.
+
 ```bash
 npm install
-npm run build      # production build
-npm run start      # watch mode
+npm run build      # production build — required after every src/ change
+npm run start      # watch mode — auto-builds on every file save
 npm run lint:js    # JS lint
 npm run lint:css   # SCSS lint
 ```
@@ -118,8 +124,14 @@ wm-posts-grid/
 └── build/                     — compiled output (generated, not committed)
 ```
 
-## Known Limitations
+## Tradeoffs & Known Limitations
 
-- The REST API endpoint for `wm_article` requires `show_in_rest: true`, which makes posts publicly readable. If articles need to be private, additional REST API authentication would be required.
-- The Transients cache does not account for filter-driven REST API responses (only the initial server-rendered HTML is cached). Filtered results are always live from the database.
-- Image download on activation depends on `picsum.photos` being reachable. If the request times out, the post is still created without a featured image.
+- **Client-side filtering via REST API** — Every filter or pagination interaction triggers a new REST API request to the database. This approach suits sites with dynamic content. For fully static sites, a better approach would be to load all posts once and filter from the DOM. For sites with thousands of posts, consider splitting content into separate pages per category to avoid deep pagination.
+
+- **Cache covers initial load only** — The Transients cache applies to the server-rendered HTML on first load. Filtered results fetched via REST API are always live from the database and are not cached.
+
+- **Cache invalidation is not real-time** — The cache is cleared when an article is saved or deleted, but visitors will only see the updated content after a page refresh.
+
+- **REST API visibility** — The `wm_article` post type is exposed via the REST API (`show_in_rest: true`), which makes posts publicly readable. If articles need to be private, additional REST API authentication would be required.
+
+- **Image download on activation** — Demo images are downloaded from `picsum.photos` on activation. If the request times out, the post is still created without a featured image.
