@@ -52,5 +52,30 @@ class WM_Post_Type {
 			'hierarchical'      => false,            // Flat — no parent/child like standard tags.
 			'show_admin_column' => true,
 		] );
+
+		// Add thumbnail column to the admin list table.
+		add_filter( 'manage_wm_article_posts_columns', [ self::class, 'add_thumbnail_column' ] );
+		add_action( 'manage_wm_article_posts_custom_column', [ self::class, 'render_thumbnail_column' ], 10, 2 );
+	}
+
+	// Insert a thumbnail column before the title column.
+	public static function add_thumbnail_column( array $columns ): array {
+		$new = [];
+		foreach ( $columns as $key => $value ) {
+			if ( 'title' === $key ) {
+				$new['wm_thumbnail'] = 'Image';
+			}
+			$new[ $key ] = $value;
+		}
+		return $new;
+	}
+
+	// Output the featured image for each row.
+	public static function render_thumbnail_column( string $column, int $post_id ): void {
+		if ( 'wm_thumbnail' !== $column ) {
+			return;
+		}
+		$thumbnail = get_the_post_thumbnail( $post_id, [ 60, 60 ], [ 'style' => 'border-radius:4px;object-fit:cover;' ] );
+		echo $thumbnail ?: '—';
 	}
 }
