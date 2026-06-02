@@ -60,6 +60,7 @@ Column counts per breakpoint are stored as block attributes (`columnsDesktop`, `
 The initial page load renders posts via PHP (`render.php`), which is good for SEO and perceived performance. After any filter or pagination interaction, `view.js` fetches updated posts from the REST API (`/wp-json/wp/v2/wm-articles`) and replaces the grid HTML in place.
 
 The REST API filtering maps directly to the filter logic requirement:
+
 - OR within a type: `wm-categories=1,2` → `tax_query` with `operator: IN`
 - AND across types: separate `tax_query` clauses with `relation: AND`
 
@@ -73,7 +74,7 @@ The plugin uses `wm_category` and `wm_tag` taxonomies (not the built-in `categor
 
 ### Demo Content Seeding
 
-Article data (titles, excerpts, content, image seeds, taxonomy assignments) is defined in `includes/demo-content.php`. Images are downloaded from `https://picsum.photos/seed/{seed}/800/500` on activation and uploaded to the WordPress media library as standard attachments. All created IDs are stored in `wp_options` for reliable cleanup.
+Article data (titles, excerpts, content, image seeds, taxonomy assignments) is defined in `includes/demo-content.php`. Images are downloaded from `https://picsum.photos/seed/{seed}/1200/630` on activation and uploaded to the WordPress media library as standard attachments. All created IDs are stored in `wp_options` for reliable cleanup.
 
 ## Uninstall
 
