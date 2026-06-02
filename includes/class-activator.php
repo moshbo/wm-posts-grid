@@ -122,11 +122,13 @@ class WM_Activator {
 	}
 
 	private static function create_demo_page(): void {
-		$block_content = '<!-- wp:wm/posts-filter /-->
+		$block_content = '<!-- wp:group {"align":"wide","layout":{"type":"default"}} -->
+<div class="wp-block-group alignwide"><!-- wp:wm/posts-filter /-->
 
 <!-- wp:wm/posts-grid {"columnsDesktop":3,"columnsTablet":2,"columnsMobile":1,"postsPerPage":6} -->
 <!-- wp:wm/posts-pagination /-->
-<!-- /wp:wm/posts-grid -->';
+<!-- /wp:wm/posts-grid --></div>
+<!-- /wp:group -->';
 
 		$page_id = wp_insert_post( [
 			'post_title'   => 'WM Articles',
