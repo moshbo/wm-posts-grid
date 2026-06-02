@@ -15,7 +15,6 @@ define( 'WM_PG_VERSION',    '1.0.0' );
 define( 'WM_PG_DIR',        plugin_dir_path( __FILE__ ) );
 define( 'WM_PG_URL',        plugin_dir_url( __FILE__ ) );
 define( 'WM_PG_BUILD_DIR',  WM_PG_DIR . 'build/' );
-define( 'WM_PG_BUILD_URL',  WM_PG_URL . 'build/' );
 
 require_once WM_PG_DIR . 'includes/class-post-type.php';
 require_once WM_PG_DIR . 'includes/class-activator.php';
