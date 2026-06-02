@@ -120,7 +120,8 @@ wm-posts-grid/
 │   │   ├── posts-filter/      — filter block (edit.js, render.php, view.js, style.scss)
 │   │   └── posts-pagination/  — pagination inner block (edit.js, render.php, view.js, style.scss)
 │   └── shared/
-│       └── _variables.scss    — design tokens (colours, typography, breakpoints)```
+│       └── _variables.scss    — design tokens (colours, typography, breakpoints)
+```
 
 ## Tradeoffs & Known Limitations
 
