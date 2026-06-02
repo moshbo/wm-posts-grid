@@ -24,11 +24,16 @@ require_once WM_PG_DIR . 'includes/class-deactivator.php';
 register_activation_hook( __FILE__, [ 'WM_Activator', 'activate' ] );
 register_deactivation_hook( __FILE__, [ 'WM_Deactivator', 'deactivate' ] );
 
+add_action( 'after_setup_theme', 'wm_pg_theme_support' );  // Ensure wide/full alignment works regardless of active theme.
 add_action( 'init', [ 'WM_Post_Type', 'register' ] );     // Register CPT and taxonomies on every page load.
 add_action( 'init', 'wm_pg_register_blocks' );             // Register Gutenberg blocks on every page load.
 add_action( 'admin_notices', 'wm_pg_activation_notice' );  // Show success banner once after activation.
 add_action( 'save_post_wm_article', 'wm_pg_clear_cache' ); // Clear grid cache when an article is saved.
 add_action( 'deleted_post', 'wm_pg_clear_cache' );         // Clear grid cache when any post is deleted.
+
+function wm_pg_theme_support(): void {
+	add_theme_support( 'align-wide' );
+}
 
 function wm_pg_register_blocks(): void {
 	register_block_type( WM_PG_BUILD_DIR . 'posts-grid' );       // Reads block.json → registers editor JS, frontend CSS/JS, render.php.
