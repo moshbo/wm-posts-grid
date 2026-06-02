@@ -19,7 +19,7 @@ class WM_Post_Type {
 			'public'        => true,
 			'show_in_rest'  => true,
 			'rest_base'     => 'wm-articles',        // REST endpoint slug: /wp-json/wp/v2/wm-articles.
-			'supports'      => [ 'title', 'editor', 'excerpt', 'thumbnail' ],
+			'supports'      => [ 'title', 'editor', 'excerpt', 'thumbnail', 'author' ],
 			'has_archive'   => false,
 			'menu_icon'     => 'dashicons-media-document',
 			'menu_position' => 5,
