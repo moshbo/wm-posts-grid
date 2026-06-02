@@ -121,7 +121,7 @@ wm-posts-grid/
 │   │   └── posts-pagination/  — pagination inner block (edit.js, render.php, view.js, style.scss)
 │   └── shared/
 │       └── _variables.scss    — design tokens (colours, typography, breakpoints)
-└── build/                     — compiled output (generated, not committed)
+└── build/                     — compiled output (not committed to git, included in release zip)
 ```
 
 ## Tradeoffs & Known Limitations
