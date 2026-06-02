@@ -31,24 +31,24 @@ add_action( 'save_post_wm_article', 'wm_pg_clear_cache' ); // Clear grid cache w
 add_action( 'deleted_post', 'wm_pg_clear_cache' );         // Clear grid cache when any post is deleted.
 
 function wm_pg_register_blocks(): void {
-	register_block_type( WM_PG_BUILD_DIR . 'posts-grid' );
-	register_block_type( WM_PG_BUILD_DIR . 'posts-filter' );
-	register_block_type( WM_PG_BUILD_DIR . 'posts-pagination' );
+	register_block_type( WM_PG_BUILD_DIR . 'posts-grid' );       // Reads block.json → registers editor JS, frontend CSS/JS, render.php.
+	register_block_type( WM_PG_BUILD_DIR . 'posts-filter' );     // Same for the filter block.
+	register_block_type( WM_PG_BUILD_DIR . 'posts-pagination' ); // Same for the pagination inner block.
 
-	// Pass REST API root to view scripts.
+	// Inject REST API URL and nonce as a global JS variable before view scripts run.
 	$script_data = [
-		'apiUrl' => esc_url_raw( rest_url() ),
-		'nonce'  => wp_create_nonce( 'wp_rest' ),
+		'apiUrl' => esc_url_raw( rest_url() ),      // Base REST API URL (e.g. https://site.com/wp-json/).
+		'nonce'  => wp_create_nonce( 'wp_rest' ),   // Security token for authenticated REST requests.
 	];
 
 	wp_add_inline_script(
-		'wm-posts-grid-view-script',
+		'wm-posts-grid-view-script',                // Handle auto-generated from block name by register_block_type.
 		'var wmPG = ' . wp_json_encode( $script_data ) . ';',
-		'before'
+		'before'                                    // Inject before the script runs so wmPG is available immediately.
 	);
 
 	wp_add_inline_script(
-		'wm-posts-filter-view-script',
+		'wm-posts-filter-view-script',              // Same injection for the filter view script.
 		'var wmPG = ' . wp_json_encode( $script_data ) . ';',
 		'before'
 	);
