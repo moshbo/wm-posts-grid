@@ -56,7 +56,7 @@ class WM_Activator {
 				'post_status'  => 'publish',
 				'post_type'    => 'wm_article',
 				'post_date'    => $data['date'],
-				'post_author'  => get_current_user_id(), // The admin who activated the plugin.
+				'post_author'  => self::get_admin_user_id(), // The site admin user.
 			] );
 
 			if ( is_wp_error( $post_id ) ) {
@@ -125,6 +125,12 @@ class WM_Activator {
 		);
 
 		return $attachment_id;
+	}
+
+	// Resolve the site admin user ID from the Administration Email Address setting.
+	private static function get_admin_user_id(): int {
+		$admin = get_user_by( 'email', get_option( 'admin_email' ) );
+		return $admin ? $admin->ID : 1;
 	}
 
 	// Creates a published page with both blocks pre-inserted as block markup.
