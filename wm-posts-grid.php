@@ -1,0 +1,79 @@
+<?php
+/**
+ * Plugin Name: WM Posts Grid
+ * Description: Custom articles grid with filtering and pagination Gutenberg blocks.
+ * Version:     1.0.0
+ * Requires at least: 6.4
+ * Requires PHP: 8.1
+ * Text Domain: wm-posts-grid
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+define( 'WM_PG_VERSION',    '1.0.0' );
+define( 'WM_PG_DIR',        plugin_dir_path( __FILE__ ) );
+define( 'WM_PG_URL',        plugin_dir_url( __FILE__ ) );
+define( 'WM_PG_BUILD_DIR',  WM_PG_DIR . 'build/' );
+define( 'WM_PG_BUILD_URL',  WM_PG_URL . 'build/' );
+
+require_once WM_PG_DIR . 'includes/class-post-type.php';
+require_once WM_PG_DIR . 'includes/class-activator.php';
+require_once WM_PG_DIR . 'includes/class-deactivator.php';
+
+register_activation_hook( __FILE__, [ 'WM_Activator', 'activate' ] );
+register_deactivation_hook( __FILE__, [ 'WM_Deactivator', 'deactivate' ] );
+
+add_action( 'init', [ 'WM_Post_Type', 'register' ] );
+add_action( 'init', 'wm_pg_register_blocks' );
+add_action( 'admin_notices', 'wm_pg_activation_notice' );
+add_action( 'save_post_wm_article', 'wm_pg_clear_cache' );
+add_action( 'deleted_post', 'wm_pg_clear_cache' );
+
+function wm_pg_register_blocks(): void {
+	register_block_type( WM_PG_BUILD_DIR . 'posts-grid' );
+	register_block_type( WM_PG_BUILD_DIR . 'posts-filter' );
+	register_block_type( WM_PG_BUILD_DIR . 'posts-pagination' );
+
+	// Pass REST API root to view scripts.
+	$script_data = [
+		'apiUrl' => esc_url_raw( rest_url() ),
+		'nonce'  => wp_create_nonce( 'wp_rest' ),
+	];
+
+	wp_add_inline_script(
+		'wm-posts-grid-view-script',
+		'var wmPG = ' . wp_json_encode( $script_data ) . ';',
+		'before'
+	);
+
+	wp_add_inline_script(
+		'wm-posts-filter-view-script',
+		'var wmPG = ' . wp_json_encode( $script_data ) . ';',
+		'before'
+	);
+}
+
+function wm_pg_activation_notice(): void {
+	$data = get_transient( 'wm_pg_activation_notice' );
+	if ( ! $data ) {
+		return;
+	}
+
+	$posts_url = admin_url( 'edit.php?post_type=wm_article' );
+	$page_url  = get_permalink( $data['page_id'] );
+
+	printf(
+		'<div class="notice notice-success is-dismissible"><p>WM Posts Grid activated successfully. <a href="%s">View articles</a> | <a href="%s" target="_blank">View demo page</a></p></div>',
+		esc_url( $posts_url ),
+		esc_url( $page_url )
+	);
+
+	delete_transient( 'wm_pg_activation_notice' );
+}
+
+function wm_pg_clear_cache(): void {
+	global $wpdb;
+	$wpdb->query(
+		"DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_wm_pg_posts_%'"
+	);
+}

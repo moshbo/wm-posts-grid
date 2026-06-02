@@ -1,0 +1,80 @@
+@use '../../shared/variables' as *;
+
+.wm-posts-filter {
+	font-family: $wm-font;
+	margin-bottom: 32px;
+
+	&__group {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 10px;
+		margin-bottom: 12px;
+	}
+
+	&__label {
+		font-size: 13px;
+		font-weight: 600;
+		color: $wm-text-muted;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		min-width: 70px;
+	}
+
+	&__pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	&__pill {
+		appearance: none;
+		background: $wm-white;
+		border: 1.5px solid $wm-border;
+		border-radius: $wm-radius-pill;
+		color: $wm-text;
+		cursor: pointer;
+		font-family: $wm-font;
+		font-size: 13px;
+		font-weight: 500;
+		padding: 5px 14px;
+		transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+		&:hover {
+			border-color: $wm-blue;
+			color: $wm-blue;
+		}
+
+		&.is-active,
+		&[aria-pressed='true'] {
+			background: $wm-blue;
+			border-color: $wm-blue;
+			color: $wm-white;
+		}
+	}
+
+	&__clear {
+		appearance: none;
+		background: none;
+		border: none;
+		color: $wm-text-muted;
+		cursor: pointer;
+		font-family: $wm-font;
+		font-size: 13px;
+		padding: 0;
+		text-decoration: underline;
+		margin-top: 4px;
+
+		&:hover {
+			color: $wm-text;
+		}
+	}
+}
+
+.wm-posts-filter-editor {
+	border: 1px dashed #ccc;
+	border-radius: 8px;
+	padding: 12px 16px;
+	color: #888;
+	font-size: 13px;
+}

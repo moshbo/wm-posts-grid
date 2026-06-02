@@ -1,0 +1,55 @@
+@use '../../shared/variables' as *;
+
+.wm-posts-pagination {
+	font-family: $wm-font;
+	margin-top: 32px;
+
+	&__pages {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		flex-wrap: wrap;
+	}
+
+	&__btn {
+		appearance: none;
+		background: $wm-white;
+		border: 1.5px solid $wm-border;
+		border-radius: $wm-radius;
+		color: $wm-text;
+		cursor: pointer;
+		font-family: $wm-font;
+		font-size: 14px;
+		font-weight: 500;
+		min-width: 38px;
+		padding: 7px 12px;
+		transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+
+		&:hover:not( .is-active ) {
+			border-color: $wm-blue;
+			color: $wm-blue;
+		}
+
+		&.is-active {
+			background: $wm-blue;
+			border-color: $wm-blue;
+			color: $wm-white;
+			cursor: default;
+		}
+	}
+
+	&__ellipsis {
+		color: $wm-text-muted;
+		padding: 0 4px;
+	}
+}
+
+.wm-posts-pagination-editor {
+	border: 1px dashed #ccc;
+	border-radius: 8px;
+	padding: 8px 16px;
+	color: #888;
+	font-size: 13px;
+	text-align: center;
+}

@@ -1,0 +1,156 @@
+@use '../../shared/variables' as *;
+
+.wm-posts-grid {
+	font-family: $wm-font;
+
+	&__items {
+		display: grid;
+		grid-template-columns: repeat( var( --wm-cols-desktop, 3 ), 1fr );
+		gap: 24px;
+		position: relative;
+		transition: opacity 0.2s ease;
+
+		@media ( max-width: $bp-tablet ) {
+			grid-template-columns: repeat( var( --wm-cols-tablet, 2 ), 1fr );
+		}
+
+		@media ( max-width: $bp-mobile ) {
+			grid-template-columns: repeat( var( --wm-cols-mobile, 1 ), 1fr );
+		}
+
+		&.is-loading {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+	}
+
+	&__empty {
+		grid-column: 1 / -1;
+		text-align: center;
+		color: $wm-text-muted;
+		padding: 48px 0;
+		font-size: 16px;
+	}
+}
+
+// Card component
+.wm-card {
+	background: $wm-white;
+	border-radius: $wm-radius;
+	box-shadow: $wm-shadow-sm;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	border-top: 3px solid transparent;
+	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+
+	&:hover {
+		box-shadow: $wm-shadow-md;
+		border-top-color: $wm-blue;
+	}
+
+	&__thumbnail {
+		display: block;
+		aspect-ratio: 16 / 9;
+		overflow: hidden;
+	}
+
+	&__img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.3s ease;
+
+		.wm-card:hover & {
+			transform: scale( 1.03 );
+		}
+	}
+
+	&__body {
+		padding: 20px 24px 24px;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	&__category {
+		display: inline-block;
+		font-size: 12px;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: $wm-blue;
+		background: $wm-blue-light;
+		border-radius: $wm-radius-pill;
+		padding: 3px 10px;
+		margin-bottom: 12px;
+	}
+
+	&__title {
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 1.35;
+		color: $wm-text;
+		margin: 0 0 10px;
+		flex: 1;
+
+		a {
+			color: inherit;
+			text-decoration: none;
+
+			&:hover {
+				color: $wm-blue;
+			}
+		}
+	}
+
+	&__excerpt {
+		font-size: 14px;
+		line-height: 1.6;
+		color: $wm-text-muted;
+		margin: 0 0 16px;
+	}
+
+	&__link {
+		font-size: 14px;
+		font-weight: 600;
+		color: $wm-blue;
+		text-decoration: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		margin-top: auto;
+
+		&::after {
+			content: '→';
+			transition: transform 0.15s ease;
+		}
+
+		&:hover::after {
+			transform: translateX( 3px );
+		}
+	}
+}
+
+// Editor preview
+.wm-posts-grid-editor {
+	border: 1px dashed #ccc;
+	border-radius: $wm-radius;
+	padding: 16px;
+
+	&__preview {
+		text-align: center;
+		color: $wm-text-muted;
+		padding: 8px 0;
+
+		p {
+			font-weight: 600;
+			margin: 0 0 4px;
+		}
+
+		small {
+			font-size: 12px;
+		}
+	}
+}
