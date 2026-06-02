@@ -33,7 +33,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 
 		try {
 			const response = await fetch(
-				`${ wmPG.apiUrl }wm-articles?${ params.toString() }`,
+				`${ wmPG.apiUrl }wp/v2/wm-articles?${ params.toString() }`,
 				{ headers: { 'X-WP-Nonce': wmPG.nonce } }
 			);
 
