@@ -1,21 +1,21 @@
-@use '../../shared/variables' as *;
+@use "../../shared/variables" as *;
 
 .wm-posts-grid {
 	font-family: $wm-font;
 
 	&__items {
 		display: grid;
-		grid-template-columns: repeat( var( --wm-cols-desktop, 3 ), 1fr );
+		grid-template-columns: repeat(var(--wm-cols-desktop, 3), 1fr);
 		gap: 24px;
 		position: relative;
 		transition: opacity 0.2s ease;
 
-		@media ( max-width: $bp-tablet ) {
-			grid-template-columns: repeat( var( --wm-cols-tablet, 2 ), 1fr );
+		@media (max-width: $bp-tablet) {
+			grid-template-columns: repeat(var(--wm-cols-tablet, 2), 1fr);
 		}
 
-		@media ( max-width: $bp-mobile ) {
-			grid-template-columns: repeat( var( --wm-cols-mobile, 1 ), 1fr );
+		@media (max-width: $bp-mobile) {
+			grid-template-columns: repeat(var(--wm-cols-mobile, 1), 1fr);
 		}
 
 		&.is-loading {
@@ -42,7 +42,9 @@
 	display: flex;
 	flex-direction: column;
 	border-top: 3px solid transparent;
-	transition: box-shadow 0.2s ease, border-color 0.2s ease;
+	transition:
+		box-shadow 0.2s ease,
+		border-color 0.2s ease;
 
 	&:hover {
 		box-shadow: $wm-shadow-md;
@@ -63,7 +65,7 @@
 		transition: transform 0.3s ease;
 
 		.wm-card:hover & {
-			transform: scale( 1.03 );
+			transform: scale(1.03);
 		}
 	}
 
@@ -76,6 +78,7 @@
 
 	&__category {
 		display: inline-block;
+		align-self: flex-start;
 		font-size: 12px;
 		font-weight: 600;
 		text-transform: uppercase;
@@ -123,12 +126,12 @@
 		margin-top: auto;
 
 		&::after {
-			content: '→';
+			content: "→";
 			transition: transform 0.15s ease;
 		}
 
 		&:hover::after {
-			transform: translateX( 3px );
+			transform: translateX(3px);
 		}
 	}
 }
