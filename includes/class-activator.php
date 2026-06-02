@@ -8,6 +8,7 @@ class WM_Activator {
 	private static array $term_ids       = [];
 	private static int   $demo_page_id   = 0;
 
+	// Main entry point — runs once when the plugin is activated.
 	public static function activate(): void {
 		WM_Post_Type::register();
 		flush_rewrite_rules();
@@ -27,6 +28,7 @@ class WM_Activator {
 		set_transient( 'wm_pg_activation_notice', [ 'page_id' => self::$demo_page_id ], 60 );
 	}
 
+	// Creates taxonomy terms and returns a name→ID map used when assigning terms to posts.
 	private static function seed_terms( string $taxonomy, array $names ): array {
 		$map = [];
 		foreach ( $names as $name ) {
@@ -44,6 +46,7 @@ class WM_Activator {
 		return $map;
 	}
 
+	// Creates all demo articles, assigns their terms, and attaches a featured image to each.
 	private static function seed_posts( array $posts, array $category_map, array $tag_map ): void {
 		foreach ( $posts as $data ) {
 			$post_id = wp_insert_post( [
@@ -82,6 +85,7 @@ class WM_Activator {
 		}
 	}
 
+	// Downloads an image from picsum.photos and uploads it to the WP media library.
 	private static function attach_remote_image( string $seed, int $post_id ): int|false {
 		$url      = "https://picsum.photos/seed/{$seed}/1200/630";
 		$response = wp_remote_get( $url, [ 'timeout' => 20 ] );
@@ -121,6 +125,7 @@ class WM_Activator {
 		return $attachment_id;
 	}
 
+	// Creates a published page with both blocks pre-inserted as block markup.
 	private static function create_demo_page(): void {
 		$block_content = '<!-- wp:group {"align":"wide","layout":{"type":"default"}} -->
 <div class="wp-block-group alignwide"><!-- wp:wm/posts-filter /-->
