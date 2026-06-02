@@ -5,6 +5,7 @@
  * Version:     1.0.0
  * Requires at least: 6.4
  * Requires PHP: 8.1
+ * Author:      Moshe Buaron
  * Text Domain: wm-posts-grid
  */
 
