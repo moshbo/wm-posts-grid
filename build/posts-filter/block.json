@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wm/posts-filter",
+  "version": "1.0.0",
+  "title": "WM Posts Filter",
+  "category": "widgets",
+  "icon": "filter",
+  "description": "Displays category and tag filters that communicate with the WM Posts Grid block.",
+  "supports": {
+    "html": false
+  },
+  "render": "file:./render.php",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js"
+}

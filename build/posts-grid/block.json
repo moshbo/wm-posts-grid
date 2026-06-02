@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "wm/posts-grid",
+  "version": "1.0.0",
+  "title": "WM Posts Grid",
+  "category": "widgets",
+  "icon": "grid-view",
+  "description": "Displays WM articles in a responsive grid layout with configurable columns.",
+  "supports": {
+    "html": false,
+    "align": ["wide", "full"]
+  },
+  "attributes": {
+    "columnsDesktop": { "type": "integer", "default": 3 },
+    "columnsTablet":  { "type": "integer", "default": 2 },
+    "columnsMobile":  { "type": "integer", "default": 1 },
+    "postsPerPage":   { "type": "integer", "default": 6 }
+  },
+  "allowedBlocks": ["wm/posts-pagination"],
+  "render": "file:./render.php",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js"
+}
