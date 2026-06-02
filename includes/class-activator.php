@@ -55,6 +55,7 @@ class WM_Activator {
 				'post_content' => $data['content'],
 				'post_status'  => 'publish',
 				'post_type'    => 'wm_article',
+				'post_date'    => $data['date'],
 			] );
 
 			if ( is_wp_error( $post_id ) ) {
