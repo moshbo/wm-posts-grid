@@ -17,7 +17,8 @@ module.exports = {
 		path: path.resolve( __dirname, 'build' ),
 	},
 	plugins: [
-		...defaultConfig.plugins,
+		// Filter out the default CopyPlugin that creates the duplicate build/blocks/ directory.
+		...defaultConfig.plugins.filter( ( p ) => p.constructor.name !== 'CopyPlugin' ),
 		new CopyPlugin( {
 			patterns: [
 				// Copy block.json files
