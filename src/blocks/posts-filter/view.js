@@ -61,6 +61,7 @@ document.addEventListener( 'DOMContentLoaded', () => {
 		clearBtn.hidden    = ! hasSelection;
 	}
 
+	// No parameters needed — the function reads directly from the outer `selected` state (closure).
 	// Dispatch CustomEvent to document — the grid's view.js listens for this.
 	// Set is spread into Array because Set cannot be serialized directly.
 	// page resets to 1 on every filter change.
