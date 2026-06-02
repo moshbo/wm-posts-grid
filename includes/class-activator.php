@@ -56,6 +56,7 @@ class WM_Activator {
 				'post_status'  => 'publish',
 				'post_type'    => 'wm_article',
 				'post_date'    => $data['date'],
+				'post_author'  => get_current_user_id(), // The admin who activated the plugin.
 			] );
 
 			if ( is_wp_error( $post_id ) ) {
