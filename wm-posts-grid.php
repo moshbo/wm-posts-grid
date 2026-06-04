@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WM Posts Grid
  * Description: Custom articles grid with filtering and pagination Gutenberg blocks.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Requires at least: 6.4
  * Requires PHP: 8.1
  * Author:      Moshe Buaron
