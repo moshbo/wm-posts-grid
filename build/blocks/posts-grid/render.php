@@ -28,6 +28,10 @@ $wrapper_attrs = get_block_wrapper_attributes( [
 	'data-block'       => 'wm-posts-grid',
 	'data-posts-per-page' => (string) $posts_per_page,
 	'style'            => "--wm-cols-desktop:{$cols_desktop};--wm-cols-tablet:{$cols_tablet};--wm-cols-mobile:{$cols_mobile}",
+    'data-wp-interactive' => 'wm-posts-grid',
+	'data-wp-init'       => 'callbacks.watchFilters', // On load
+	'data-wp-watch'       => 'callbacks.watchFilters', // On state change
+	'data-wp-context' => wp_json_encode( [ 'postsPerPage' => $posts_per_page ] ),	
 ] );
 
 ob_start();
@@ -37,6 +41,8 @@ ob_start();
 		class="wm-posts-grid__items"
 		data-total-pages="<?php echo (int) $query->max_num_pages; ?>"
 		data-current-page="<?php echo (int) $current_page; ?>"
+    	data-wp-interactive="wm-posts-grid"
+		data-wp-watch="callbacks.renderPosts"
 	>
 		<?php foreach ( $query->posts as $post ) : ?>
 			<?php

@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
 define( 'WM_PG_VERSION',    '1.0.0' );
 define( 'WM_PG_DIR',        plugin_dir_path( __FILE__ ) );
 define( 'WM_PG_URL',        plugin_dir_url( __FILE__ ) );
-define( 'WM_PG_BUILD_DIR',  WM_PG_DIR . 'build/' );
+define( 'WM_PG_BUILD_DIR', WM_PG_DIR . 'build/blocks/' );
 
 require_once WM_PG_DIR . 'includes/class-post-type.php';
 require_once WM_PG_DIR . 'includes/class-activator.php';
@@ -39,23 +39,10 @@ function wm_pg_register_blocks(): void {
 	register_block_type( WM_PG_BUILD_DIR . 'posts-filter' );     // Same for the filter block.
 	register_block_type( WM_PG_BUILD_DIR . 'posts-pagination' ); // Same for the pagination inner block.
 
-	// Inject REST API URL and nonce as a global JS variable before view scripts run.
-	$script_data = [
-		'apiUrl' => esc_url_raw( rest_url() ),      // Base REST API URL (e.g. https://site.com/wp-json/).
-		'nonce'  => wp_create_nonce( 'wp_rest' ),   // Security token for authenticated REST requests.
-	];
-
-	wp_add_inline_script(
-		'wm-posts-grid-view-script',                // Handle auto-generated from block name by register_block_type.
-		'var wmPG = ' . wp_json_encode( $script_data ) . ';',
-		'before'                                    // Inject before the script runs so wmPG is available immediately.
-	);
-
-	wp_add_inline_script(
-		'wm-posts-filter-view-script',              // Same injection for the filter view script.
-		'var wmPG = ' . wp_json_encode( $script_data ) . ';',
-		'before'
-	);
+	wp_interactivity_config( 'wm-posts-grid', [
+		'apiUrl' => esc_url_raw( rest_url() ),
+		'nonce'  => wp_create_nonce( 'wp_rest' ),
+	] );
 }
 
 function wm_pg_activation_notice(): void {

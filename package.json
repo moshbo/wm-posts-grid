@@ -4,12 +4,13 @@
   "description": "WM Posts Grid Gutenberg blocks plugin",
   "private": true,
   "scripts": {
-    "build": "wp-scripts build",
-    "start": "wp-scripts start",
+    "build": "WP_EXPERIMENTAL_MODULES=true wp-scripts build",
+    "start": "WP_EXPERIMENTAL_MODULES=true wp-scripts start",
     "lint:js": "wp-scripts lint-js",
     "lint:css": "wp-scripts lint-style"
   },
   "devDependencies": {
+    "@wordpress/interactivity": "^6.47.0",
     "@wordpress/scripts": "^30.0.0"
   }
 }

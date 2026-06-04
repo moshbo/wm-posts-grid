@@ -7,6 +7,8 @@ $current_page = max( 1, get_query_var( 'paged', 1 ) );
 $wrapper_attrs = get_block_wrapper_attributes( [
 	'class'            => 'wm-posts-pagination',
 	'data-block'       => 'wm-posts-pagination',
+    'data-wp-interactive' => 'wm-posts-grid',
+    'data-wp-watch'       => 'callbacks.renderPagination',
 	'data-current-page' => (string) $current_page,
 ] );
 ?>

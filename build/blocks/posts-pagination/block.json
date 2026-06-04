@@ -7,13 +7,16 @@
   "category": "widgets",
   "icon": "controls-forward",
   "description": "Pagination control for the WM Posts Grid block. Must be used as an inner block of WM Posts Grid.",
-  "parent": ["wm/posts-grid"],
+  "parent": [
+    "wm/posts-grid"
+  ],
   "supports": {
     "html": false,
+    "interactivity": true,
     "inserter": false
   },
   "render": "file:./render.php",
   "editorScript": "file:./index.js",
   "style": "file:./style-index.css",
-  "viewScript": "file:./view.js"
+  "viewScriptModule": "file:./view.js"
 }

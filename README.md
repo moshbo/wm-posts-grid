@@ -40,18 +40,26 @@ Inner block of WM Posts Grid. Renders a page number navigator that is updated dy
 
 ## Architecture Decisions
 
-### Inter-block Communication: Custom DOM Events
+### Inter-block Communication: WordPress Interactivity API
 
-The filter and grid blocks communicate via the native `CustomEvent` API on `document`:
+The filter, grid, and pagination blocks share state via the WordPress Interactivity API (`@wordpress/interactivity`). A shared store named `wm-posts-grid` holds all reactive state:
 
-- `wm:filter-change` — dispatched by the filter's `view.js` when a pill is toggled. Payload: `{ categories, tags, page }`.
-- `wm:page-change` — dispatched by the pagination's `view.js` when a page button is clicked. Payload: `{ page }`.
-- `wm:pagination-update` — dispatched by the grid's `view.js` after fetching new posts. Payload: `{ totalPages, currentPage }`.
+- `selectedCategories` — array of selected category term IDs
+- `selectedTags` — array of selected tag term IDs
+- `currentPage` — current pagination page
+- `posts` — array of fetched posts (updated after each filter or page change)
+- `hasSelection` — derived boolean, true when any filter is active
+- `isPillActive` — derived boolean, true when a specific pill is selected (read via `getContext()`)
 
-Custom event names are plain strings — no registration or declaration is needed. The `wm:` prefix prevents naming collisions with other plugins or libraries.
+**Why Interactivity API?**
+The Interactivity API is WordPress's official solution for reactive frontend block behavior. It provides a shared reactive store, declarative HTML directives, and native ES module support via `viewScriptModule` — removing the need for manual event dispatching and listening.
 
-**Why Custom Events over `@wordpress/data`?**
-`@wordpress/data` is the right choice for state shared within the block editor. On the frontend (view scripts), it adds significant overhead. Custom Events are lightweight, require no shared module, and work naturally when blocks are placed anywhere on the same page without a common ancestor.
+**Key implementation details:**
+- `data-wp-interactive="wm-posts-grid"` — binds an element to the store
+- `data-wp-context='{"termId": 5, "type": "categories"}'` — passes per-element data accessible via `getContext()`
+- `data-wp-watch="callbacks.watchFilters"` — re-runs the callback whenever accessed state changes
+- `data-wp-init="callbacks.watchFilters"` — runs the callback once on block initialization
+- `wp_interactivity_config()` — passes PHP data (REST API URL, nonce) to view scripts, compatible with ES modules
 
 ### Responsive Columns: CSS Custom Properties
 
